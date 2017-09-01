@@ -29,6 +29,11 @@ $(document).ready(function() {
   // catch and handle the click on an add song button
   $('#albums').on('click', '.add-song', handleAddSongClick);
 
+  // catch and handle the click on a delete song button
+  $('#albums').on('click', '.delete-album', handleDeleteAlbumClick);
+
+
+
   // save song modal save button
   $('#saveSong').on('click', handleNewSongSubmit);
 });
@@ -93,6 +98,7 @@ function renderAlbum(album) {
             <div class='panel-footer'>
               <div class='panel-footer'>
                 <button class='btn btn-primary add-song'>Add Song</button>
+                <button class='btn btn-primary delete-album'>Delete Album</button>
               </div>
 
             </div>
@@ -109,6 +115,22 @@ function handleAddSongClick(e) {
   $('#songModal').data('album-id', currentAlbumId);
   $('#songModal').modal();  // display the modal!
 }
+
+function handleDeleteAlbumClick(e) {
+    if (confirm("Are you sure?")){
+        var currentAlbumId = $(this).closest('.album').data('album-id');
+        $.ajax({
+            method: 'DELETE',
+            url: '/api/albums/' + currentAlbumId,
+            success: location.reload(true)
+        });
+        console.log(currentAlbumId)
+    }
+    else {
+      console.log("nothing happened");
+    }
+}
+
 
 // when the song modal submit button is clicked:
 function handleNewSongSubmit(e) {
